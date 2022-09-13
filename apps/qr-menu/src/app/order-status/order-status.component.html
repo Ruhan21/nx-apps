@@ -1,0 +1,15 @@
+<div class="row align-items-center order-status text-center">
+  <div class="col">
+    <ng-container *ngFor="let item of textList; let odd = odd">
+      <div class="has-animation animate-in" [ngClass]="odd?'animation-ltr':'animation-rtl'">
+        <p class="bigger">{{item}}</p>
+      </div>
+    </ng-container>
+    <img *ngIf="showTick" [@bounceInOnEnter] src="assets/images/tick.png" alt="tick">
+    <p *ngIf="showViewOrder" [@fadeInOnEnter]	>View Order Details</p>
+  </div>
+</div>
+
+
+
+

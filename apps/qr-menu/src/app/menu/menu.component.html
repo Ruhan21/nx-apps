@@ -1,0 +1,139 @@
+<!-- ======= Menu Section ======= -->
+
+<section id="menu" class="menu section-bg" style="position: relative; overflow-y: hidden">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h2>Menu</h2>
+      <p>Check Our Tasty Menu</p>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <ul id="menu-flters">
+          <ng-container *ngFor="let item of filerCategories">
+            <li (click)="filterByCategory(item.categoryName)">{{item.categoryName}}</li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row menu-container">
+
+      <ng-container *ngFor="let item of menuDisplayList">
+        <div #Menuitem class="menu-item-container">
+          <div class="col-lg-6 mb-3 menu-item filter-starters" (click)="toggleShowMenuItem(Menuitem)">
+            <img src="../assets/images/menu/{{item.imageUrl}}" class="menu-img" alt="">
+            <div class="menu-content">
+              <a>{{item.name}}</a><span>{{item.price | currency: item.currency :'symbol-narrow'}}</span>
+            </div>
+            <div class="menu-ingredients">
+              {{item.description}}
+            </div>
+          </div>
+          <div class="col-lg-6 menu-item-counter">
+            <div class="row align-items-center justify-content-end">
+              <div class="col-auto">
+                <button class="btn btn-outline-danger" type="button" (click)="removeFromOrder(item)"><span class="material-icons-outlined"> remove </span></button>
+              </div>
+              <div class="col-auto">
+                <p>{{numberOfItemsSelected(item)}}</p>
+              </div>
+              <div class="col-auto">
+                <button class="btn btn-outline-success" type="button" (click)="addToOrder(item)"><span class="material-icons-outlined"> add </span></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </ng-container>
+
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Order Footer -->
+
+<div class="order-footer" [ngClass]="showOrderFooter?'':'active'">
+  <div class="container">
+    <div class="order-container p-3">
+      <div class="row">
+        <div class="col">
+          <div class="d-grid gap-2">
+            <button (click)="summarizeOrderData()"
+                    class="btn btn-dark"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">Complete Order {{orderDetails.total | currency: orderDetails.currency :'symbol-narrow'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="card border-top border-bottom border-3" style="border-color: #cda45e !important;">
+        <div class="card-body p-2">
+
+          <div class="row justify-between">
+            <div class="col">
+              <p class="lead fw-bold mb-5" style="color: #cda45e;">Purchase Reciept</p>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="toggleShowOrderFooter()"></button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mb-3">
+              <p class="small text-muted mb-1">Date</p>
+              <p>{{decodedOrderId.dateTime | date: 'd MMMM'}}</p>
+            </div>
+            <div class="col-auto mb-3">
+              <p class="small text-muted mb-1">Order No.</p>
+              <p>{{orderDetails.orderId}}</p>
+            </div>
+          </div>
+
+          <div class="mx-n5 px-2 py-4" style="background-color: #f2f2f2;">
+            <div *ngFor="let item of summarizedOrderData" class="row">
+              <div class="col-5">
+                <p>{{item.menuItem.name}}</p>
+              </div>
+              <div class="col-auto">
+                <p>{{item.menuItem.price | currency: item.menuItem.currency :'symbol-narrow'}}</p>
+              </div>
+              <div class="col-2">
+                <p>x {{item.quantity}}</p>
+              </div>
+              <div class="col-auto text-end">
+                <p>{{item.total | currency: item.menuItem.currency :'symbol-narrow'}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-between my-4">
+            <div class="col">
+              <div class="d-grid gap-2">
+                <button type="button" class="btn btn-outline-dark"  data-bs-dismiss="modal" aria-label="Close" (click)="payOrder()">Pay now</button>
+              </div>
+            </div>
+            <div class="col-auto">
+              <p class="lead fw-bold mb-0 text-end" style="color: #cda45e;">{{orderDetails.total | currency: orderDetails.currency :'symbol-narrow'}}</p>
+            </div>
+          </div>
+
+          <p class="mt-4 pt-2 mb-0">Want any help? <a href="#!" style="color: #cda45e;">Please contact
+            us</a></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
